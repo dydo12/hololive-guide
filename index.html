@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hololive 完全ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; background: #f5f3ff; }
+
+.hero {
+  background: linear-gradient(135deg, #1a0533 0%, #2d0a5e 50%, #1a0533 100%);
+  padding: 3rem 2rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '★ ✦ ☆ ✧ ★ ✦ ☆ ✧ ★ ✦ ☆ ✧ ★ ✦ ☆ ✧';
+  position: absolute;
+  top: 12px; left: 0; right: 0;
+  font-size: 11px;
+  color: rgba(255,200,255,0.3);
+  letter-spacing: 6px;
+}
+.hero-logo { font-size: 13px; color: rgba(255,180,255,0.7); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 0.5rem; }
+.hero-title { font-size: 2.2rem; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 0.5rem; text-shadow: 0 0 30px rgba(200,100,255,0.5); }
+.hero-title span { color: #e0aaff; }
+.hero-sub { font-size: 13px; color: rgba(220,180,255,0.8); letter-spacing: 2px; margin-bottom: 1.5rem; }
+.hero-stats { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; }
+.hero-stat { text-align: center; }
+.hero-stat-num { font-size: 1.5rem; font-weight: 700; color: #e0aaff; }
+.hero-stat-label { font-size: 11px; color: rgba(220,180,255,0.6); letter-spacing: 1px; }
+
+nav {
+  background: #fff;
+  border-bottom: 1px solid #e9d5ff;
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+nav button {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.9rem 1.4rem;
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+nav button.active { color: #9333ea; border-bottom-color: #9333ea; }
+nav button:hover:not(.active) { color: #111; }
+
+.content { padding: 1.5rem; max-width: 720px; margin: 0 auto; }
+.section { display: none; }
+.section.active { display: block; }
+
+.section-title { font-size: 11px; font-weight: 500; color: #9333ea; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1rem; }
+
+.timeline { position: relative; padding-left: 1.5rem; }
+.timeline::before { content: ''; position: absolute; left: 6px; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, #9333ea, #e879f9, #9333ea); opacity: 0.4; }
+.timeline-item { position: relative; margin-bottom: 1.5rem; }
+.timeline-item::before { content: ''; position: absolute; left: -1.2rem; top: 6px; width: 8px; height: 8px; border-radius: 50%; background: #9333ea; border: 2px solid #f5f3ff; }
+.timeline-year { font-size: 11px; font-weight: 500; color: #9333ea; letter-spacing: 2px; margin-bottom: 0.25rem; }
+.timeline-card { background: #fff; border: 1px solid #e9d5ff; border-radius: 12px; padding: 1rem 1.25rem; }
+.timeline-card h3 { font-size: 14px; font-weight: 500; color: #111; margin-bottom: 0.3rem; }
+.timeline-card p { font-size: 13px; color: #6b7280; line-height: 1.6; }
+.tag { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 99px; margin-top: 0.5rem; margin-right: 4px; }
+.tag-purple { background: #f3e8ff; color: #7e22ce; }
+.tag-pink { background: #fce7f3; color: #9d174d; }
+.tag-blue { background: #eff6ff; color: #1d4ed8; }
+.tag-green { background: #f0fdf4; color: #166534; }
+.tag-amber { background: #fffbeb; color: #92400e; }
+
+.gen-group { margin-bottom: 1.5rem; }
+.gen-label { font-size: 11px; font-weight: 500; color: #6b7280; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e9d5ff; }
+.member-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.member-card { background: #fff; border: 1px solid #e9d5ff; border-radius: 12px; padding: 1rem 0.75rem; text-align: center; cursor: pointer; transition: border-color 0.2s; }
+.member-card:hover { border-color: #9333ea; }
+.member-avatar { width: 48px; height: 48px; border-radius: 50%; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.member-name { font-size: 12px; font-weight: 500; color: #111; }
+.member-gen { font-size: 10px; color: #6b7280; margin-top: 2px; }
+
+.member-detail-panel { background: #fff; border: 1px solid #e9d5ff; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; display: none; }
+.member-detail-panel.open { display: block; }
+.detail-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.detail-avatar { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+.detail-name { font-size: 16px; font-weight: 500; color: #111; }
+.detail-sub { font-size: 12px; color: #6b7280; margin-top: 2px; }
+.detail-info { font-size: 13px; color: #6b7280; line-height: 1.7; }
+.close-btn { float: right; background: none; border: 1px solid #e9d5ff; border-radius: 8px; padding: 2px 10px; font-size: 12px; color: #6b7280; cursor: pointer; font-family: 'Noto Sans JP', sans-serif; }
+
+.branch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+.branch-card { background: #fff; border: 1px solid #e9d5ff; border-radius: 12px; padding: 1.25rem; }
+.branch-icon { font-size: 24px; margin-bottom: 0.5rem; }
+.branch-name { font-size: 14px; font-weight: 500; color: #111; margin-bottom: 0.25rem; }
+.branch-desc { font-size: 12px; color: #6b7280; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-logo">hololive production</div>
+  <div class="hero-title">ホロライブ<br><span>完全ガイド</span></div>
+  <div class="hero-sub">History & Members Encyclopedia</div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">2017</div><div class="hero-stat-label">設立年份</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">70+</div><div class="hero-stat-label">現役成員</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">3</div><div class="hero-stat-label">海外分部</div></div>
+  </div>
+</div>
+
+<nav>
+  <button class="active" onclick="showTab('history', this)">歷史</button>
+  <button onclick="showTab('members', this)">成員</button>
+  <button onclick="showTab('branches', this)">分部</button>
+</nav>
+
+<div class="content">
+  <div class="section active" id="history">
+    <div class="section-title">hololive 發展史</div>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-year">2017</div><div class="timeline-card"><h3>Cover Corp. 成立</h3><p>谷郷元昭在日本創立 Cover Corporation，最初以 AR 技術為主要業務，hololive 以 VTuber 事務所形式誕生。</p><span class="tag tag-purple">創業期</span></div></div>
+      <div class="timeline-item"><div class="timeline-year">2018</div><div class="timeline-card"><h3>初代與二期生登場</h3><p>Tokino Sora 作為第一位 hololive 成員出道，確立了事務所的方向。隨後 Roboco、Miko 等二期生陸續加入，奠定早期基礎。</p><span class="tag tag-pink">成長期</span></div></div>
+      <div class="timeline-item"><div class="timeline-year">2019</div><div class="timeline-card"><h3>hololive GAMERS 與三期生</h3><p>以遊戲實況為主題的 hololive GAMERS 成立，Fubuki、Mio 等加入。三期生 Aqua、Subaru 等人氣迅速攀升，hololive 開始在 VTuber 業界嶄露頭角。</p><span class="tag tag-blue">擴張期</span></div></div>
+      <div class="timeline-item"><div class="timeline-year">2020</div><div class="timeline-card"><h3>hololive EN 成立・全球爆發</h3><p>hololive English 第一期 Myth 正式出道，Gura、Ame、Ina、Calli、Kiara 迅速吸引全球觀眾。同年訂閱數爆炸性成長，成為全球最大 VTuber 事務所之一。</p><span class="tag tag-green">全球化</span><span class="tag tag-purple">holo EN</span></div></div>
+      <div class="timeline-item"><div class="timeline-year">2021</div><div class="timeline-card"><h3>hololive ID 擴編・holostars EN</h3><p>印尼分部持續擴大，hololive Council（EN 二期）出道。holostars English（TEMPUS）同步成立，男性 VTuber 也開始走向海外市場。</p><span class="tag tag-amber">ID 擴展</span><span class="tag tag-blue">holostars</span></div></div>
+      <div class="timeline-item"><div class="timeline-year">2022–2023</div><div class="timeline-card"><h3>hololive EN 三期・holo DEV_IS</h3><p>hololive Advent（EN 三期）和 Justice（EN 四期）相繼出道。日本方面推出全新子品牌 holo DEV_IS，以 ReGLOSS 為首，走向更多元的音樂方向。</p><span class="tag tag-pink">新世代</span><span class="tag tag-purple">DEV_IS</span></div></div>
+      <div class="timeline-item"><div class="timeline-year">2024–2025</div><div class="timeline-card"><h3>持續全球擴張</h3><p>hololive 持續在音樂、演唱會、IP 授權等方面深化布局，多位成員突破百萬訂閱，成為跨媒體的全球文化現象。</p><span class="tag tag-green">現在進行式</span></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="members">
+    <div class="section-title">代表成員</div>
+    <div id="member-detail" class="member-detail-panel"></div>
+    <div class="gen-group"><div class="gen-label">0期生・GAMERS</div><div class="member-grid" id="grid-0gen"></div></div>
+    <div class="gen-group"><div class="gen-label">一〜五期生</div><div class="member-grid" id="grid-jp"></div></div>
+    <div class="gen-group"><div class="gen-label">hololive English</div><div class="member-grid" id="grid-en"></div></div>
+    <div class="gen-group"><div class="gen-label">hololive Indonesia</div><div class="member-grid" id="grid-id"></div></div>
+  </div>
+
+  <div class="section" id="branches">
+    <div class="section-title">事務所分部</div>
+    <div class="branch-grid">
+      <div class="branch-card"><div class="branch-icon">🇯🇵</div><div class="branch-name">hololive Japan</div><div class="branch-desc">本部，擁有 0 期至 6 期生與 GAMERS，以及子品牌 holo DEV_IS，是整個 hololive 的核心。</div><div style="margin-top:0.75rem"><span class="tag tag-purple">本部</span><span class="tag tag-pink">最多成員</span></div></div>
+      <div class="branch-card"><div class="branch-icon">🌎</div><div class="branch-name">hololive English</div><div class="branch-desc">2020 年成立，目前擁有 Myth、Council、Advent、Justice 四期，是推動 hololive 全球化的主力。</div><div style="margin-top:0.75rem"><span class="tag tag-blue">EN</span><span class="tag tag-green">全球最大觀眾群</span></div></div>
+      <div class="branch-card"><div class="branch-icon">🇮🇩</div><div class="branch-name">hololive Indonesia</div><div class="branch-desc">2020 年設立，三期生共九名成員，以印尼語、英語、日語三語播出，深耕東南亞市場。</div><div style="margin-top:0.75rem"><span class="tag tag-amber">ID</span><span class="tag tag-purple">三語播出</span></div></div>
+      <div class="branch-card"><div class="branch-icon">⭐</div><div class="branch-name">holostars</div><div class="branch-desc">男性 VTuber 部門，日本部分與 holostars English（TEMPUS / ARMIS）並行，風格多元。</div><div style="margin-top:0.75rem"><span class="tag tag-blue">男性部門</span></div></div>
+      <div class="branch-card"><div class="branch-icon">🎵</div><div class="branch-name">holo DEV_IS</div><div class="branch-desc">2023 年推出的全新子品牌，以 ReGLOSS 為首，著重音樂創作與獨特世界觀，走向更多元路線。</div><div style="margin-top:0.75rem"><span class="tag tag-pink">新品牌</span><span class="tag tag-purple">音樂導向</span></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const members = {
+  '0gen': [
+    { name: 'Tokino Sora', gen: '0期生', emoji: '🌸', color: '#dbeafe', desc: 'hololive 第一位成員，被稱為「hololive 的象徵」。以清澈歌聲聞名，是整個事務所的精神領袖。擅長歌唱與直播，粉絲暱稱為「Soratomos」。' },
+    { name: 'Roboco', gen: '0期生', emoji: '🤖', color: '#f3e8ff', desc: '以機器人少女形象出道，擅長 FPS 遊戲，尤其是 APEX Legends。個性溫柔親切，直播內容多元。' },
+    { name: 'Sakura Miko', gen: '0期生', emoji: '🌺', color: '#fce7f3', desc: '以「엘리트」（精英）自稱的個性派成員，直播充滿爆笑名場面。粉絲稱為「35P」，是 hololive 人氣最高的成員之一。' },
+    { name: 'Shirakami Fubuki', gen: 'GAMERS', emoji: '🦊', color: '#f0fdf4', desc: '白上吹雪，以狐狸少女形象深受喜愛。長期擔任 hololive 的「招牌門面」，同時身兼 holostars 的友人 A。' },
+    { name: 'Ookami Mio', gen: 'GAMERS', emoji: '🐺', color: '#fff7ed', desc: '大神澪，溫柔的狼巫女形象。擅長塔羅牌占卜直播，歌聲出眾，是 hololive GAMERS 的隊長。' },
+  ],
+  'jp': [
+    { name: 'Minato Aqua', gen: '二期生', emoji: '💙', color: '#dbeafe', desc: '湊あくあ，以笨蛋可愛著稱的女僕形象。遊戲技術極強，尤其 APEX 和馬力歐賽車，但直播中常常製造爆笑失誤。' },
+    { name: 'Oozora Subaru', gen: '二期生', emoji: '🦆', color: '#fef9c3', desc: '大空スバル，活潑開朗的「運動少女」。以高能量直播風格和反應誇張聞名，是 hololive 的元氣擔當。' },
+    { name: 'Usada Pekora', gen: '三期生', emoji: '🐰', color: '#fce7f3', desc: '兔田ぺこら，「戰犯兔」。以惡搞、挑戰其他成員為樂，直播風格獨特，擁有超高人氣，訂閱數長期名列前茅。' },
+    { name: 'Shirogane Noel', gen: '三期生', emoji: '⚔️', color: '#f3e8ff', desc: '白銀ノエル，騎士少女。以豐滿身材與戰鬥系形象受到關注，歌聲獨特，與 Flare 的組合「NoeFure」廣受喜愛。' },
+    { name: 'Houshou Marine', gen: '三期生', emoji: '🏴‍☠️', color: '#fef2f2', desc: '宝鐘マリン，海賊船長。以豐富的表情和誇張反應聞名，二次元文化造詣深厚，是 hololive 的文化大使。' },
+    { name: 'Amane Kanata', gen: '四期生', emoji: '😇', color: '#f0fdf4', desc: '天音かなた，天使系成員。性格反差萌，外表純白天使但直播中常展現驚人毅力，遊戲硬核程度令人震驚。' },
+    { name: 'Kiryu Coco', gen: '四期生', emoji: '🐉', color: '#fff7ed', desc: '桐生ここ，龍女。hololive EN 前身，推動了事務所英語化的重要人物。雖已畢業，但對 hololive 影響深遠。' },
+    { name: 'La+ Darknesss', gen: '六期生', emoji: '😈', color: '#f3e8ff', desc: 'La+ダークネス，自稱「黑暗之主」的惡魔少女。實際上反差萌十足，直播中常常展現反差，人氣極高。' },
+  ],
+  'en': [
+    { name: 'Gawr Gura', gen: 'EN Myth', emoji: '🦈', color: '#dbeafe', desc: '鯊魚 VTuber，hololive 訂閱數最高的成員，突破 400 萬訂閱。以「a」的口癖和可愛風格席捲全球，粉絲稱為「Chumbuds」。' },
+    { name: 'Watson Amelia', gen: 'EN Myth', emoji: '🔍', color: '#fef9c3', desc: '偵探主題的時間旅行者。以直播創意和梗文化聞名，技術能力強，常常製作獨特的互動直播。' },
+    { name: 'Ninomae Inanis', gen: 'EN Myth', emoji: '🐙', color: '#f3e8ff', desc: '克蘇魯觸手系成員，擁有出色的繪畫才能。直播風格輕鬆療癒，定期舉辦繪畫直播，粉絲稱為「Takodachis」。' },
+    { name: 'Mori Calliope', gen: 'EN Myth', emoji: '💀', color: '#f0fdf4', desc: '死神見習，同時也是真正的音樂人。以說唱和原創音樂在 VTuber 界獨樹一幟，多首歌曲在 Billboard 榜單上榜。' },
+    { name: 'Takanashi Kiara', gen: 'EN Myth', emoji: '🐔', color: '#fff7ed', desc: '不死鳥少女，出身奧地利的日語流利成員。以高能量和對 hololive JP 的熱愛聞名，擔任 EN 與 JP 之間的橋樑。' },
+    { name: 'Ouro Kronii', gen: 'EN Council', emoji: '⏰', color: '#dbeafe', desc: '時間之守護者，以低沉聲線和反差萌著稱。外表冷酷嚴肅，實際上直播中頻繁展示反差，人氣很高。' },
+    { name: 'Nerissa Ravencroft', gen: 'EN Advent', emoji: '🎤', color: '#fce7f3', desc: 'hololive Advent 成員，以出色的歌聲聞名，被視為 EN 最強歌姬之一，外形為哥德風惡魔系少女。' },
+  ],
+  'id': [
+    { name: 'Moona Hoshinova', gen: 'ID Gen 1', emoji: '🌙', color: '#f3e8ff', desc: '月亮主題的 VTuber，以美麗歌聲和對食物的熱愛著稱。與 Pekora 的友情「MoonPeko」廣為人知。' },
+    { name: 'Kureiji Ollie', gen: 'ID Gen 2', emoji: '🧟', color: '#fef2f2', desc: '喪屍少女，以超高能量和爆炸性格聞名。多語言能力強，是 ID 與 EN 交流最頻繁的成員之一。' },
+    { name: 'Kobo Kanaeru', gen: 'ID Gen 3', emoji: '🌧️', color: '#dbeafe', desc: 'ID 三期生，以低年齡感的爆笑直播風格迅速走紅，訂閱成長速度驚人，是 ID 分部目前人氣最旺的成員。' },
+  ],
+};
+
+function renderMembers() {
+  Object.entries(members).forEach(([key, list]) => {
+    const grid = document.getElementById('grid-' + key);
+    if (!grid) return;
+    list.forEach(m => {
+      const card = document.createElement('div');
+      card.className = 'member-card';
+      card.innerHTML = `<div class="member-avatar" style="background:${m.color}">${m.emoji}</div><div class="member-name">${m.name}</div><div class="member-gen">${m.gen}</div>`;
+      card.onclick = () => showMember(m);
+      grid.appendChild(card);
+    });
+  });
+}
+
+function showMember(m) {
+  const panel = document.getElementById('member-detail');
+  panel.innerHTML = `<button class="close-btn" onclick="document.getElementById('member-detail').classList.remove('open')">關閉</button><div class="detail-header"><div class="detail-avatar" style="background:${m.color}">${m.emoji}</div><div><div class="detail-name">${m.name}</div><div class="detail-sub">${m.gen}</div></div></div><div class="detail-info">${m.desc}</div>`;
+  panel.classList.add('open');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+renderMembers();
+</script>
+</body>
+</html>
